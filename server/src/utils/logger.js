@@ -1,4 +1,4 @@
-const config = require("..config/env");
+const config = require("../config/env");
 
 const LOG_LEVELS = {
   DEBUG: 0,
@@ -6,56 +6,70 @@ const LOG_LEVELS = {
   WARN: 2,
   ERROR: 3,
 };
-// Custom logger class
-class logger {
+
+const COLORS = {
+  ERROR: "\x1b[31m",
+  WARN: "\x1b[33m",
+  INFO: "\x1b[36m",
+  DEBUG: "\x1b[90m",
+};
+
+const RESET = "\x1b[0m";
+
+class Logger {
   constructor() {
     this.currentLevel = config.isDevelopment
       ? LOG_LEVELS.DEBUG
       : LOG_LEVELS.INFO;
   }
-  formatMessage(level, message, meta = {}) {
-    const timestamp = new Date().toISOString();
 
-    const logObject = {
-      timestamp,
-      level,
-      message,
-      environment: config.nodeEnv,
-      ...meta,
-    };
-    if (config.isDevelopment) {
-      return JSON.stringify(logObject);
+  formatMessage(level, message, meta) {
+    const timestamp = new Date().toISOString();
+    const hasMeta = meta && Object.keys(meta).length > 0;
+
+    if (config.isProduction) {
+      return JSON.stringify({
+        timestamp,
+        level,
+        message,
+        environment: config.nodeEnv,
+        ...(hasMeta && { meta }),
+      });
     }
-    const colors = {
-      ERROR: "\x1b[31m", // Red
-      WARN: "\x1b[33m", // Yellow
-      INFO: "\x1b[36m", // Cyan
-      DEBUG: "\x1b[90m", // Gray
-    };
-    const reset = "\x1b[0m";
-    return `${colors[level]}[${timestamp}] [${level}] ${reset}${message}`;
+
+    const color = COLORS[level] || "\x1b[37m";
+    let output = `${color}[${timestamp}] [${level}]${RESET} ${message}`;
+
+    if (hasMeta) {
+      output += ` ${JSON.stringify(meta, null, 2)}`;
+    }
+
+    return output;
   }
-  // Log methods for different levels
+
   debug(message, meta) {
     if (this.currentLevel <= LOG_LEVELS.DEBUG) {
-      console.debug(this.formatMessage("DEBUG", message, meta));
+      console.log(this.formatMessage("DEBUG", message, meta));
     }
   }
-  // For info, warn, and error, we use console.info, console.warn, and console.error respectively to ensure proper log level handling in various environments
+
   info(message, meta) {
     if (this.currentLevel <= LOG_LEVELS.INFO) {
-      console.info(this.formatMessage("INFO", message, meta));
+      console.log(this.formatMessage("INFO", message, meta));
     }
   }
+
   warn(message, meta) {
     if (this.currentLevel <= LOG_LEVELS.WARN) {
       console.warn(this.formatMessage("WARN", message, meta));
     }
   }
+
   error(message, meta) {
     if (this.currentLevel <= LOG_LEVELS.ERROR) {
       console.error(this.formatMessage("ERROR", message, meta));
     }
   }
 }
-module.exports = new logger();
+
+module.exports = new Logger();
