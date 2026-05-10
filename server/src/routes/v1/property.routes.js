@@ -5,7 +5,11 @@ const {
   getNearbyProperties,
   createProperty,
   getProperty,
+  updateSafetyScore,
+  updateTrustScore,
 } = require("../../controllers/property.controller");
+
+router.put("/:id/trust", updateTrustScore);
 
 // GET all properties
 router.get("/", getProperties);

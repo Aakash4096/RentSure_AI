@@ -1,5 +1,6 @@
+const { calculateTrustScore } = require("../services/trust.service");
 const Property = require("../models/Property");
-
+const { calculateSafetyScore } = require("../services/safety.service");
 // GET /api/v1/properties - Get all properties
 const getProperties = async (req, res) => {
   try {
@@ -49,6 +50,13 @@ const createProperty = async (req, res) => {
   try {
     const { title, description, address, price, amenities } = req.body;
 
+    // Calculate safety score
+    const safetyScore = calculateSafetyScore(
+      address.lat,
+      address.lng,
+      amenities,
+    );
+
     const propertyData = {
       title,
       description,
@@ -58,11 +66,12 @@ const createProperty = async (req, res) => {
         state: address.state,
         location: {
           type: "Point",
-          coordinates: [address.lng, address.lat], // [lng, lat] order!
+          coordinates: [address.lng, address.lat],
         },
       },
       price,
       amenities,
+      safetyScore,
     };
 
     const property = await Property.create(propertyData);
@@ -91,9 +100,38 @@ const getProperty = async (req, res) => {
   }
 };
 
+// PUT /api/v1/properties/:id/trust - Update trust score
+const updateTrustScore = async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    // Simulated landlord data (will come from User model in production)
+    const landlord = {
+      isVerified: req.body.isVerified || false,
+      documentsSubmitted: req.body.documentsSubmitted || 0,
+    };
+
+    const reviews = req.body.reviews || [];
+    const trustScore = calculateTrustScore(landlord, reviews);
+
+    property.trustScore = trustScore;
+    await property.save();
+
+    res.json({ message: "Trust score updated", trustScore });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to update trust score", error: error.message });
+  }
+};
 module.exports = {
   getProperties,
   getNearbyProperties,
   createProperty,
   getProperty,
+  updateTrustScore,
 };
