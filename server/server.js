@@ -49,7 +49,8 @@ app.get("/health", (req, res) => {
 // API Routes (will be added in Phase 3)
 // app.use('/api/v1/auth', require('./src/routes/v1/auth.routes'));
 // app.use('/api/v1/properties', require('./src/routes/v1/property.routes'));
-
+// API Routes
+app.use("/api/v1/auth", require("./src/routes/v1/auth.routes"));
 // ============ ERROR HANDLING ============
 
 // 404 handler
