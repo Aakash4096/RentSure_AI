@@ -68,4 +68,23 @@ const login = async (req, res) => {
     res.status(500).json({ message: "Login failed", error: error.message });
   }
 };
-module.exports = { register, login };
+
+// GET /api/v1/auth/me
+const getMe = async (req, res) => {
+  try {
+    // req.user comes from the protect middleware
+    const user = await User.findById(req.user.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ user: user.toJSON() });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to fetch profile", error: error.message });
+  }
+};
+
+module.exports = { register, login, getMe };
