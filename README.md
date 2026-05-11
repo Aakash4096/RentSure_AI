@@ -169,7 +169,6 @@ curl -X POST http://localhost:5000/api/v1/properties -H "Content-Type: applicati
 curl -X POST http://localhost:8000/scan -F "file=@test.txt"
 ```
 
-
 📈 Future Roadmap
 OpenAI GPT‑4 integration for conversational property search
 
@@ -184,7 +183,10 @@ ML‑based rent price prediction
 React Native mobile application
 
 👨‍💻 Author
-Aakash Kumar — Full Stack Development, System Architecture, AI Integration
-Malaviya National Institute of Technology Jaipur
-Department of Electronics & Communication Engineering
+Aakash Kumar — Full Stack Development,
 
+System Architecture, AI Integration
+
+Malaviya National Institute of Technology Jaipur
+
+Department of Electronics & Communication Engineering
