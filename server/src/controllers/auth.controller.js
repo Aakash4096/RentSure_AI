@@ -32,11 +32,14 @@ const register = async (req, res) => {
       user: user.toJSON(),
     });
   } catch (error) {
+    console.error("REGISTER ERROR:", error.message);
+    console.error("FULL ERROR:", error);
     res
       .status(500)
       .json({ message: "Registration failed", error: error.message });
   }
 };
+
 // POST /api/v1/auth/login
 const login = async (req, res) => {
   try {
@@ -65,6 +68,7 @@ const login = async (req, res) => {
       user: user.toJSON(),
     });
   } catch (error) {
+    console.error("LOGIN ERROR:", error.message);
     res.status(500).json({ message: "Login failed", error: error.message });
   }
 };
@@ -72,7 +76,6 @@ const login = async (req, res) => {
 // GET /api/v1/auth/me
 const getMe = async (req, res) => {
   try {
-    // req.user comes from the protect middleware
     const user = await User.findById(req.user.userId);
 
     if (!user) {
@@ -81,6 +84,7 @@ const getMe = async (req, res) => {
 
     res.json({ user: user.toJSON() });
   } catch (error) {
+    console.error("GET ME ERROR:", error.message);
     res
       .status(500)
       .json({ message: "Failed to fetch profile", error: error.message });
