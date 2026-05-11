@@ -57,30 +57,59 @@ Student housing searches are fragmented across multiple platforms with no standa
 
 ---
 
-## 📂 Project Structure
-
 rentsure-ai/
 ├── client/ # React SPA (port 5173)
 │ ├── src/
-│ │ ├── components/
+│ │ ├── components/ # Reusable UI components
 │ │ ├── pages/
-│ │ │ ├── Login.jsx
-│ │ │ ├── Register.jsx
-│ │ │ ├── Dashboard.jsx
-│ │ │ └── ContractScanner.jsx
+│ │ │ ├── Login.jsx # Authentication page
+│ │ │ ├── Register.jsx # User registration
+│ │ │ ├── Dashboard.jsx # Property analytics
+│ │ │ └── ContractScanner.jsx # Contract AI analysis
 │ │ ├── context/
+│ │ │ └── AuthContext.jsx # Global auth state
 │ │ └── services/
+│ │ └── api.js # Axios client
+│ ├── package.json
+│ └── vite.config.js
+│
 ├── server/ # Express API (port 5000)
 │ ├── src/
+│ │ ├── config/
+│ │ │ ├── database.js # MongoDB connection
+│ │ │ └── env.js # Environment validation
 │ │ ├── controllers/
+│ │ │ ├── auth.controller.js
+│ │ │ └── property.controller.js
 │ │ ├── models/
+│ │ │ ├── User.js # User schema (bcrypt + JWT)
+│ │ │ └── Property.js # Property schema (2dsphere)
 │ │ ├── routes/v1/
+│ │ │ ├── auth.routes.js
+│ │ │ ├── property.routes.js
+│ │ │ └── contract.routes.js
 │ │ ├── middleware/
+│ │ │ ├── auth.middleware.js # JWT verification
+│ │ │ ├── rateLimiter.js
+│ │ │ └── requestLogger.js
 │ │ ├── services/
+│ │ │ ├── safety.service.js # Safety score engine
+│ │ │ └── trust.service.js # Trust score engine
 │ │ └── utils/
+│ │ ├── ApiError.js
+│ │ ├── asyncHandler.js
+│ │ └── logger.js
+│ ├── server.js
+│ ├── package.json
+│ └── .env.example
+│
 ├── ai-service/ # Python microservice (port 8000)
-│ └── main.py
-└── .env.example
+│ ├── main.py # FastAPI contract scanner
+│ └── requirements.txt
+│
+├── README.md
+├── LICENSE
+└── .gitignore
 
 text
 
