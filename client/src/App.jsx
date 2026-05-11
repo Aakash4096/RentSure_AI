@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import ContractScanner from "./pages/ContractScanner";
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
@@ -18,6 +19,14 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route
+              path="/contracts"
+              element={
+                <ProtectedRoute>
+                  <ContractScanner />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/"
               element={

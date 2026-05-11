@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 // ============ ROUTES ============
 const requestLogger = require("./src/middleware/requestLogger");
 app.use(requestLogger);
-
+app.use("/api/v1/contracts", require("./src/routes/v1/contract.routes"));
 // Health check endpoint
 app.get("/health", (req, res) => {
   res.status(200).json({

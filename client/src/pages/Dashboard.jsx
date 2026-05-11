@@ -7,7 +7,6 @@ const Dashboard = () => {
   const { user, logout } = useAuth();
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("all");
 
   useEffect(() => {
     fetchProperties();
@@ -45,6 +44,12 @@ const Dashboard = () => {
           </div>
 
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => (window.location.href = "/contracts")}
+              className="px-4 py-2 bg-orange-500/20 text-orange-400 rounded-lg text-sm hover:bg-orange-500/30 transition border border-orange-500/30"
+            >
+              📄 Scan Contract
+            </button>
             <div className="flex items-center gap-2 text-white/60">
               <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center text-sm font-medium text-orange-400">
                 {user?.name?.charAt(0)?.toUpperCase() || "U"}
@@ -152,11 +157,8 @@ const Dashboard = () => {
                   whileHover={{ y: -4 }}
                   className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:border-orange-500/30 transition-colors group"
                 >
-                  {/* Gradient Bar */}
                   <div className="h-2 bg-gradient-to-r from-orange-500 via-orange-400 to-yellow-500" />
-
                   <div className="p-5">
-                    {/* Scores */}
                     <div className="flex gap-2 mb-4">
                       <span className="px-3 py-1 bg-green-500/10 border border-green-500/30 rounded-full text-xs text-green-400 font-medium">
                         🛡️ {property.safetyScore}
@@ -165,24 +167,18 @@ const Dashboard = () => {
                         ⭐ {property.trustScore}
                       </span>
                     </div>
-
-                    {/* Title & Location */}
                     <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-orange-400 transition-colors">
                       {property.title}
                     </h3>
                     <p className="text-white/40 text-sm mb-4 flex items-center gap-1">
                       📍 {property.address?.full || "N/A"}
                     </p>
-
-                    {/* Price */}
                     <div className="flex items-baseline gap-1 mb-4">
                       <span className="text-2xl font-bold text-white">
                         ₹{property.price?.monthly?.toLocaleString()}
                       </span>
                       <span className="text-white/40 text-sm">/month</span>
                     </div>
-
-                    {/* Amenities */}
                     <div className="flex flex-wrap gap-1.5 mb-4">
                       {property.amenities?.map((amenity, i) => (
                         <span
@@ -193,8 +189,6 @@ const Dashboard = () => {
                         </span>
                       ))}
                     </div>
-
-                    {/* Footer */}
                     <div className="flex items-center justify-between pt-3 border-t border-white/10">
                       <span className="text-white/30 text-xs">
                         {new Date(property.createdAt).toLocaleDateString(
