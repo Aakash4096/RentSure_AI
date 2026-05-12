@@ -1,119 +1,107 @@
 # 🏠 RentSure AI — Intelligent Student Housing Platform
 
-[![Stack](https://img.shields.io/badge/Stack-MERN%20%2B%20AI-blue)](https://github.com/Aakash4096/RentSure_AI)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+<div align="center">
 
-A full‑stack AI‑powered platform that helps students find safe, affordable housing by combining **geospatial safety analysis**, **AI‑driven trust scoring**, **lifestyle matching**, and **automated contract scanning** into a single decision‑support system.
+[![Stack](https://img.shields.io/badge/Stack-MERN%20%2B%20AI-blue?style=for-the-badge)](https://github.com/Aakash4096/RentSure_AI)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)]()
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)]()
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)]()
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+_A full‑stack AI‑powered platform that helps students find safe, affordable housing by combining **geospatial safety analysis**, **AI‑driven trust scoring**, **lifestyle matching**, and **automated contract scanning** into a single decision‑support system._
+
+</div>
+
+---
+
+<div align="center">
+  <img src="https://via.placeholder.com/1000x500.png?text=✨+Insert+Glass-Morphism+UI+Screenshot+Here+✨" alt="RentSure AI Dashboard UI" width="100%">
+  <p><i>Modern, responsive glass-morphism interface powered by React 19, Tailwind CSS, and Framer Motion.</i></p>
+</div>
 
 ---
 
 ## 🎯 Problem Statement
 
-Student housing searches are fragmented across multiple platforms with no standardised safety verification, contract review, or personalised recommendations. RentSure AI solves this by integrating AI‑driven analysis into a unified workflow, reducing decision time by approximately 60 % and protecting students from unfair rental agreements.
+Student housing searches are fragmented across multiple platforms with no standardised safety verification, contract review, or personalised recommendations. **RentSure AI** solves this by integrating AI‑driven analysis into a unified workflow, reducing decision time by approximately 60% and protecting students from unfair rental agreements.
 
 ---
 
-## 🏗️ System Architecture
+## ⚙️ Engineering Pillars & Architecture
 
-| Layer          | Technology                                  | Role                                                                           |
-| :------------- | :------------------------------------------ | :----------------------------------------------------------------------------- |
-| **Frontend**   | React 19, Vite, Tailwind CSS, Framer Motion | Responsive SPA with glass‑morphism UI and page transitions                     |
-| **Backend**    | Node.js, Express, JWT, bcrypt               | REST API with layered security (Helmet, CORS, rate limiting)                   |
-| **Database**   | MongoDB, Mongoose ODM, 2dsphere index       | Schema‑flexible storage with geospatial queries for location search            |
-| **AI Service** | Python, FastAPI, PyPDF2                     | Isolated microservice for contract document analysis and clause classification |
+RentSure AI goes beyond standard CRUD operations by implementing advanced data structures and machine learning microservices to support complex decision-making.
+
+### 1. Geospatial Safety Intelligence (MongoDB 2dsphere)
+
+Most housing apps use simple distance math. RentSure AI utilises a **MongoDB 2dsphere index**, which accounts for the Earth's curvature (WGS84 coordinate system).
+
+- When a student searches for a "safe" radius, the backend calculates distance using spherical geometry.
+- Properties are algorithmically scored based on their proximity to "Positive Safety Anchors" (campus, police stations, hospitals) and available security amenities.
+
+### 2. The AI-Driven Trust Score
+
+Instead of relying purely on subjective tenant reviews, the platform uses a **multi-factor weighted average** to quantify landlord and property reliability:
+
+- `TS = w₁·LandlordHistory + w₂·PropertyVerification + w₃·DocumentCompleteness + w₄·ReviewAuthenticity`
+
+### 3. Isolated AI Microservice (FastAPI)
+
+The Contract Scanner is decoupled from the main Node.js backend into a dedicated Python microservice.
+
+- **Ecosystem Leverage:** Python's superior NLP and PDF parsing libraries (PyPDF2) handle document extraction natively.
+- **Independent Scalability:** Compute-heavy AI tasks can scale independently of the main web traffic.
+- **Pattern Matching:** The engine detects 7 critical risk categories (hidden fees, unfair termination, privacy violations) and returns a severity breakdown.
+
+### 4. Layered Security & RBAC
+
+The system implements strict **Role-Based Access Control (RBAC)** via a Middleware Factory Pattern. This ensures users (`student`, `landlord`, `admin`) are strictly isolated to their permitted endpoints, verified by securely signed JWTs.
 
 ---
 
 ## 🔥 Core Features
 
-### 1. 📄 AI Contract Scanner
-
-- Upload `.pdf` or `.txt` rental agreements
-- Pattern‑matching engine detects **7 risk categories** (hidden fees, unfair termination, privacy violations, etc.)
-- Returns a **risk score (0‑100)**, severity breakdown, and flagged keywords
-- Visualised with animated risk bar and clause cards in the dashboard
-
-### 2. 🛡️ Trust Score Engine
-
-- Multi‑factor credibility score: `TS = w₁·LandlordHistory + w₂·PropertyVerification + w₃·DocumentCompleteness + w₄·ReviewAuthenticity`
-- Configurable weights learned from historical data
-
-### 3. 🗺️ Geospatial Safety Mapping
-
-- Uses MongoDB **2dsphere index** for accurate Earth‑curvature calculations
-- Scores properties based on proximity to safe locations (campus, police, hospital)
-- Bonus for security amenities (CCTV, gated community, security guard)
-
-### 4. 💡 Lifestyle Matching (coming soon)
-
-- Content‑based filtering with cosine similarity between student preferences and property feature vectors
-- Collaborative filtering to learn from similar users’ successful matches
-
-### 5. 🔐 JWT Authentication & RBAC
-
-- **bcrypt** hashing with 12 salt rounds
-- JWT signed with configurable expiry (7 days)
-- **Role‑based access control** (`student`, `landlord`, `admin`) via middleware factory pattern
+- 📄 **AI Contract Scanner:** Upload `.pdf`/`.txt` rental agreements for instant risk analysis and clause classification.
+- 🛡️ **Trust Score Engine:** Multi‑factor credibility scoring.
+- 🗺️ **Geospatial Safety Mapping:** Earth-curvature accurate radius searches.
+- 💡 **Lifestyle Matching:** _(Coming soon)_ Collaborative filtering for roommate and property matching.
+- 🔐 **Secure Authentication:** JWT, bcrypt (12 salt rounds), and endpoint rate-limiting.
 
 ---
 
+## 📂 Folder Structure
+
+```text
 rentsure-ai/
-├── client/ # React SPA (port 5173)
-│ ├── src/
-│ │ ├── components/ # Reusable UI components
-│ │ ├── pages/
-│ │ │ ├── Login.jsx # Authentication page
-│ │ │ ├── Register.jsx # User registration
-│ │ │ ├── Dashboard.jsx # Property analytics
-│ │ │ └── ContractScanner.jsx # Contract AI analysis
-│ │ ├── context/
-│ │ │ └── AuthContext.jsx # Global auth state
-│ │ └── services/
-│ │ └── api.js # Axios client
-│ ├── package.json
-│ └── vite.config.js
+├── client/                 # React SPA (port 5173)
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── pages/
+│   │   │   ├── Login.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   └── ContractScanner.jsx
+│   │   ├── context/        # Global auth state
+│   │   └── services/       # Axios API clients
+│   └── vite.config.js
 │
-├── server/ # Express API (port 5000)
-│ ├── src/
-│ │ ├── config/
-│ │ │ ├── database.js # MongoDB connection
-│ │ │ └── env.js # Environment validation
-│ │ ├── controllers/
-│ │ │ ├── auth.controller.js
-│ │ │ └── property.controller.js
-│ │ ├── models/
-│ │ │ ├── User.js # User schema (bcrypt + JWT)
-│ │ │ └── Property.js # Property schema (2dsphere)
-│ │ ├── routes/v1/
-│ │ │ ├── auth.routes.js
-│ │ │ ├── property.routes.js
-│ │ │ └── contract.routes.js
-│ │ ├── middleware/
-│ │ │ ├── auth.middleware.js # JWT verification
-│ │ │ ├── rateLimiter.js
-│ │ │ └── requestLogger.js
-│ │ ├── services/
-│ │ │ ├── safety.service.js # Safety score engine
-│ │ │ └── trust.service.js # Trust score engine
-│ │ └── utils/
-│ │ ├── ApiError.js
-│ │ ├── asyncHandler.js
-│ │ └── logger.js
-│ ├── server.js
-│ ├── package.json
-│ └── .env.example
+├── server/                 # Express API (port 5000)
+│   ├── src/
+│   │   ├── config/         # MongoDB & Env validation
+│   │   ├── controllers/
+│   │   ├── models/         # Mongoose Schemas (2dsphere, bcrypt)
+│   │   ├── routes/v1/
+│   │   ├── middleware/     # JWT, Rate Limiter, Logger
+│   │   ├── services/       # Safety & Trust scoring engines
+│   │   └── utils/
+│   ├── server.js
+│   └── .env.example
 │
-├── ai-service/ # Python microservice (port 8000)
-│ ├── main.py # FastAPI contract scanner
-│ └── requirements.txt
+├── ai-service/             # Python microservice (port 8000)
+│   ├── main.py             # FastAPI contract scanner
+│   └── requirements.txt
 │
 ├── README.md
-├── LICENSE
 └── .gitignore
-
-text
-
----
+```
 
 ## 🔌 API Endpoints
 
