@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ContractScanner from "./pages/ContractScanner";
+import AddProperty from "./pages/AddProperty";
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
@@ -32,6 +33,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/add-property"
+              element={
+                <ProtectedRoute>
+                  <AddProperty />
                 </ProtectedRoute>
               }
             />

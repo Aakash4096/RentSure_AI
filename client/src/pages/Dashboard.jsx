@@ -45,6 +45,12 @@ const Dashboard = () => {
 
           <div className="flex items-center gap-4">
             <button
+              onClick={() => (window.location.href = "/add-property")}
+              className="px-4 py-2 bg-green-500/20 text-green-400 rounded-lg text-sm hover:bg-green-500/30 transition border border-green-500/30"
+            >
+              ➕ Add Property
+            </button>
+            <button
               onClick={() => (window.location.href = "/contracts")}
               className="px-4 py-2 bg-orange-500/20 text-orange-400 rounded-lg text-sm hover:bg-orange-500/30 transition border border-orange-500/30"
             >
@@ -142,7 +148,7 @@ const Dashboard = () => {
             <p className="text-6xl mb-4">🔍</p>
             <p className="text-white/60 text-lg">No properties yet</p>
             <p className="text-white/30 text-sm mt-2">
-              Use the API to add properties
+              Click "➕ Add Property" to add your first listing
             </p>
           </motion.div>
         ) : (
@@ -199,7 +205,14 @@ const Dashboard = () => {
                           },
                         )}
                       </span>
-                      <button className="text-orange-400 text-sm font-medium hover:text-orange-300 transition">
+                      <button
+                        onClick={() => {
+                          alert(
+                            `🏠 ${property.title}\n\n📍 ${property.address?.full}\n💰 ₹${property.price?.monthly}/month\n🛡️ Safety: ${property.safetyScore}/100\n⭐ Trust: ${property.trustScore}/100\n🏷️ ${property.amenities?.join(", ")}`,
+                          );
+                        }}
+                        className="text-orange-400 text-sm font-medium hover:text-orange-300 transition"
+                      >
                         View Details →
                       </button>
                     </div>

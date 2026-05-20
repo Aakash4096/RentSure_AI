@@ -186,18 +186,14 @@ curl -X POST http://localhost:5000/api/v1/properties -H "Content-Type: applicati
 curl -X POST http://localhost:8000/scan -F "file=@test.txt"
 ```
 
-📈 Future Roadmap
-OpenAI GPT‑4 integration for conversational property search
+## ✅ Completed Features
 
-Google Maps API for interactive map view
-
-Real‑time WebSocket notifications
-
-Tenant review verification system
-
-ML‑based rent price prediction
-
-React Native mobile application
+- [x] JWT Authentication with role-based access
+- [x] Property CRUD with geospatial search
+- [x] Safety Score calculation engine
+- [x] Trust Score calculation engine
+- [x] AI Contract Scanner (Python microservice)
+- [x] Responsive React dashboard with Tailwind CSS
 
 👨‍💻 Author
 Aakash Kumar — Full Stack Development,

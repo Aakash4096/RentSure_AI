@@ -1,0 +1,9 @@
+{
+  "name": "rentsure-ai",
+  "version": "1.0.0",
+  "description": "AI-Powered Student Housing Platform",
+  "scripts": {
+    "start": "start \"Backend\" cmd /k \"cd server && npm run dev\" && start \"AI\" cmd /k \"cd ai-service && python main.py\" && start \"Frontend\" cmd /k \"cd client && npm run dev\""
+  },
+  "author": "Aakash Kumar"
+}
