@@ -1,74 +1,33 @@
-# 🏠 RentSure AI — Intelligent Student Housing Platform
+# 🏠 RentSure AI — Student Housing Platform
 
-<div align="center">
+[![Stack](https://img.shields.io/badge/Stack-MERN%20%2B%20AI-blue)](https://github.com/Aakash4096/RentSure_AI)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-[![Stack](https://img.shields.io/badge/Stack-MERN%20%2B%20AI-blue?style=for-the-badge)](https://github.com/Aakash4096/RentSure_AI)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)]()
-[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)]()
-[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)]()
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-
-_A full‑stack AI‑powered platform that helps students find safe, affordable housing by combining **geospatial safety analysis**, **AI‑driven trust scoring**, **lifestyle matching**, and **automated contract scanning** into a single decision‑support system._
-
-</div>
+A full-stack platform that helps students find housing by combining **geospatial property search**, **safety & trust scoring**, and **automated contract analysis**.
 
 ---
 
-<div align="center">
-  <img src="https://via.placeholder.com/1000x500.png?text=✨+Insert+Glass-Morphism+UI+Screenshot+Here+✨" alt="RentSure AI Dashboard UI" width="100%">
-  <p><i>Modern, responsive glass-morphism interface powered by React 19, Tailwind CSS, and Framer Motion.</i></p>
-</div>
+## ⚙️ How It Works
+
+- **Geospatial Search:** MongoDB 2dsphere index for location-based property queries
+- **Safety Score:** Calculated from proximity to safe locations + security amenities
+- **Trust Score:** Multi-factor rating based on landlord verification and reviews
+- **Contract Scanner:** Python microservice that detects risky clauses in rental PDFs
+- **Auth:** JWT with bcrypt password hashing and role-based access control
 
 ---
 
-## 🎯 Problem Statement
+## 🔥 Features
 
-Student housing searches are fragmented across multiple platforms with no standardised safety verification, contract review, or personalised recommendations. **RentSure AI** solves this by integrating AI‑driven analysis into a unified workflow, reducing decision time by approximately 60% and protecting students from unfair rental agreements.
-
----
-
-## ⚙️ Engineering Pillars & Architecture
-
-RentSure AI goes beyond standard CRUD operations by implementing advanced data structures and machine learning microservices to support complex decision-making.
-
-### 1. Geospatial Safety Intelligence (MongoDB 2dsphere)
-
-Most housing apps use simple distance math. RentSure AI utilises a **MongoDB 2dsphere index**, which accounts for the Earth's curvature (WGS84 coordinate system).
-
-- When a student searches for a "safe" radius, the backend calculates distance using spherical geometry.
-- Properties are algorithmically scored based on their proximity to "Positive Safety Anchors" (campus, police stations, hospitals) and available security amenities.
-
-### 2. The AI-Driven Trust Score
-
-Instead of relying purely on subjective tenant reviews, the platform uses a **multi-factor weighted average** to quantify landlord and property reliability:
-
-- `TS = w₁·LandlordHistory + w₂·PropertyVerification + w₃·DocumentCompleteness + w₄·ReviewAuthenticity`
-
-### 3. Isolated AI Microservice (FastAPI)
-
-The Contract Scanner is decoupled from the main Node.js backend into a dedicated Python microservice.
-
-- **Ecosystem Leverage:** Python's superior NLP and PDF parsing libraries (PyPDF2) handle document extraction natively.
-- **Independent Scalability:** Compute-heavy AI tasks can scale independently of the main web traffic.
-- **Pattern Matching:** The engine detects 7 critical risk categories (hidden fees, unfair termination, privacy violations) and returns a severity breakdown.
-
-### 4. Layered Security & RBAC
-
-The system implements strict **Role-Based Access Control (RBAC)** via a Middleware Factory Pattern. This ensures users (`student`, `landlord`, `admin`) are strictly isolated to their permitted endpoints, verified by securely signed JWTs.
+- 📄 Upload rental agreements for automated risk analysis
+- 🗺️ Find properties near a location with radius search
+- 🛡️ Auto-calculated safety scores (0-100)
+- ⭐ Auto-calculated trust scores (0-100)
+- 🔐 Secure login/register with JWT
 
 ---
 
-## 🔥 Core Features
-
-- 📄 **AI Contract Scanner:** Upload `.pdf`/`.txt` rental agreements for instant risk analysis and clause classification.
-- 🛡️ **Trust Score Engine:** Multi‑factor credibility scoring.
-- 🗺️ **Geospatial Safety Mapping:** Earth-curvature accurate radius searches.
-- 💡 **Lifestyle Matching:** _(Coming soon)_ Collaborative filtering for roommate and property matching.
-- 🔐 **Secure Authentication:** JWT, bcrypt (12 salt rounds), and endpoint rate-limiting.
-
----
-
-## 📂 Folder Structure
+## 📂 Project Structure
 
 ```text
 rentsure-ai/
@@ -102,6 +61,25 @@ rentsure-ai/
 ├── README.md
 └── .gitignore
 ```
+
+---
+
+## 🚀 Quick Start
+
+````bash
+# Backend
+cd server && npm install && npm run dev
+
+# AI Service
+cd ai-service && pip install fastapi uvicorn PyPDF2 python-multipart && python main.py
+
+# Frontend
+cd client && npm install && npm run dev
+
+# Or use: start-all.bat
+
+
+
 
 ## 🔌 API Endpoints
 
@@ -184,7 +162,7 @@ curl -X POST http://localhost:5000/api/v1/properties -H "Content-Type: applicati
 
 # Scan a contract
 curl -X POST http://localhost:8000/scan -F "file=@test.txt"
-```
+````
 
 ## ✅ Completed Features
 
