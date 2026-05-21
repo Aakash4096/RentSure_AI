@@ -1,176 +1,263 @@
-# 🏠 RentSure AI — Distributed Student Housing & Risk Analytics Platform
+<div align="center">
 
-[![Stack](https://shields.io)](https://github.com)
-[![License](https://shields.io)](LICENSE)
+# 🏠 RentSure AI
 
-RentSure AI is a decoupled, microservices-based full-stack platform designed to optimize student housing verification. The system combines high-performance geospatial querying, rule-based algorithmic scoring, and an asynchronous Python microservice for automated rental contract risk extraction.
+### Student Housing Verification & Contract Analysis Platform
+
+A full-stack MERN + FastAPI application that helps students discover nearby rental properties, verify landlord trust metrics, and analyze rental agreements using OCR-based contract scanning.
+
+<br>
+
+![React](https://img.shields.io/badge/Frontend-React-blue?style=for-the-badge&logo=react)
+![Node.js](https://img.shields.io/badge/Backend-Node.js-green?style=for-the-badge&logo=node.js)
+![FastAPI](https://img.shields.io/badge/Microservice-FastAPI-teal?style=for-the-badge&logo=fastapi)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-darkgreen?style=for-the-badge&logo=mongodb)
+![JWT](https://img.shields.io/badge/Auth-JWT-orange?style=for-the-badge)
+
+</div>
 
 ---
 
-## 🏗️ System Architecture & Data Flow
+# 📌 Overview
 
-The platform utilizes a multi-language distributed architecture to leverage the best capabilities of both runtime environments: Node.js for rapid asynchronous I/O and user management, and Python (FastAPI) for compute-heavy file parsing and text analysis.
+RentSure AI is designed to simplify student housing verification by combining:
+
+- 🗺️ Geospatial property search
+- 🔐 Secure JWT authentication
+- 📄 OCR-based contract scanning
+- ⭐ Trust & safety scoring
+- ⚡ FastAPI microservice integration
+
+The platform uses a MERN stack backend for user management and property operations, while a separate Python FastAPI service handles PDF parsing and contract analysis.
+
+---
+
+# 🏗️ System Architecture
 
 ```text
-[ React.js SPA Client ] 
-       │
-       │ (Multipart Form HTTP POST / Upload PDF)
-       ▼
-[ Node.js / Express Gateway ] ──(Secure Internal Axios Proxy)──> [ FastAPI Microservice ]
-       │                                                                │
-       │ (Read/Write Shared Coordinates & Metrics)                      │ (PyPDF2 Text Extraction
-       ▼                                                                │  & Token Pattern Matching)
-[ MongoDB (2dsphere Index) ] <──(Sync Struct Risk Assessment)───────────┘
+                 ┌────────────────────┐
+                 │   React Frontend   │
+                 └─────────┬──────────┘
+                           │
+                    HTTP Requests
+                           │
+                 ┌─────────▼──────────┐
+                 │ Express.js Backend │
+                 └─────────┬──────────┘
+                           │
+        ┌──────────────────┴──────────────────┐
+        │                                     │
+        ▼                                     ▼
+┌───────────────┐                   ┌────────────────┐
+│   MongoDB     │                   │ FastAPI OCR    │
+│ Geospatial DB │                   │ Microservice   │
+└───────────────┘                   └────────────────┘
 ```
 
 ---
 
-## ⚙️ Core Engineering Implementations
+# 🚀 Features
 
-*   **Geospatial Discovery Pipeline:** Uses a MongoDB `2dsphere` index to compute spherical geometry queries. It utilizes the `$near` operator combined with a `$maxDistance` constraint to calculate exact property coordinates relative to university hubs.
-*   **Algorithmic Safety Engine:** Generates a deterministic safety score (0–100) using proximity factors to emergency services and point-weighted amenities vectors.
-*   **Multi-Factor Trust Engine:** Computes real-time landlord reliability ratings based on document verification status, historic user reviews, and response latency.
-*   **Automated Contract Scanner:** A lightweight Python microservice processing binary file streams to parse text data and flag non-standard liability clauses.
-*   **Defensive Security Middleware:** Implements stateless JWT authentication, cryptographically hashed passwords with `bcrypt` (12 salt rounds), strict route protection, and global CORS policies.
+## 🔐 Authentication & Security
+- JWT-based authentication
+- Protected API routes
+- Password hashing using bcrypt
+- API rate limiting
+- Secure HTTP headers with Helmet.js
+
+## 🏠 Property Management
+- Add and manage rental listings
+- Geospatial nearby-property search
+- Trust & safety score generation
+- Property filtering and discovery
+
+## 📄 OCR Contract Scanner
+- Upload rental agreements in PDF format
+- Extract text using Python PDF parsing
+- Detect risky or suspicious clauses
+- Return structured risk analysis
+
+## ⚡ Backend Engineering
+- RESTful API architecture
+- Node.js ↔ FastAPI integration
+- Modular Express middleware structure
+- MongoDB 2dsphere indexing
 
 ---
 
-## 📂 Architecture Layout
+# 🛠️ Tech Stack
 
-```text
+| Layer | Technologies |
+|------|------|
+| Frontend | React.js, Vite, Axios |
+| Backend | Node.js, Express.js |
+| Database | MongoDB, Mongoose |
+| AI Service | Python, FastAPI, PyPDF2 |
+| Security | JWT, bcrypt, Helmet.js |
+| Dev Tools | Git, Postman |
+
+---
+
+# 📂 Folder Structure
+
+```bash
 rentsure-ai/
-├── client/                 # React SPA UI Ecosystem (Vite)
+│
+├── client/                 # React Frontend
 │   ├── src/
-│   │   ├── components/     # Atomic UI components
-│   │   ├── pages/          # Routed view layers (Dashboard, Scanner, Auth)
-│   │   ├── context/        # Stateless Global Authentication State
-│   │   └── services/       # Axios API client wrappers
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── context/
+│   │   └── services/
 │   └── vite.config.js
 │
-├── server/                 # Express Gateway Application
+├── server/                 # Express Backend
 │   ├── src/
-│   │   ├── config/         # Database pooling & environment schemas
-│   │   ├── controllers/    # Request interception & business logic orchestration
-│   │   ├── models/         # Mongoose Schemas (Geospatial layers, data hiding)
-│   │   ├── routes/v1/      # Express Router API version boundaries
-│   │   ├── middleware/     # JWT Auth guards, Rate limiters, Security headers
-│   │   └── services/       # Computational engines (Safety & Trust scoring)
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   └── services/
 │   └── server.js
 │
-├── ai-service/             # Python Analytics Microservice
-│   ├── main.py             # FastAPI engine & route definitions
-│   └── requirements.txt    # System dependencies
+├── ai-service/             # FastAPI OCR Service
+│   ├── main.py
+│   └── requirements.txt
+│
 └── README.md
 ```
 
 ---
 
-## 🔌 API Specifications
+# 🔌 API Endpoints
 
-### Identity & Authentication Management
+## 🔑 Authentication APIs
 
-
-| Method | Endpoint                | Context / Action | Access Control |
-| :----- | :---------------------- | :--------------- | :------------- |
-| POST   | `/api/v1/auth/register` | Register Account | Public |
-| POST   | `/api/v1/auth/login`    | Issue Stateless Token | Public |
-| GET    | `/api/v1/auth/me`       | Hydrate Profile State | Bearer Token |
-
-### Geospatial Property Engine
-
-
-| Method | Endpoint                                           | Context / Action | Access Control |
-| :----- | :------------------------------------------------- | :--------------- | :------------- |
-| GET    | `/api/v1/properties`                               | Aggregate List | Public |
-| GET    | `/api/v1/properties/nearby?lat=&lng=&maxDistance=` | Radial Coordinate Query | Public |
-| POST   | `/api/v1/properties`                               | Publish Listing | Authenticated |
-| PUT    | `/api/v1/properties/:id/safety`                    | Mutate Safety Metrics | System Internal |
-| PUT    | `/api/v1/properties/:id/trust`                     | Mutate Reliability Metrics | System Internal |
-
-### Document Parsing Microservice
-
-
-| Method | Endpoint                 | Context / Action | Access Control |
-| :----- | :----------------------- | :--------------- | :------------- |
-| POST   | `/api/v1/contracts/scan` | Stream PDF for Risk Parsing | Authenticated |
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| POST | `/api/v1/auth/register` | Register new user |
+| POST | `/api/v1/auth/login` | Login user |
+| GET | `/api/v1/auth/me` | Get current user |
 
 ---
 
-## 🛡️ Production Security Engineering
+## 🏠 Property APIs
 
-*   **Data Hiding:** The password field is explicitly decoupled from data queries using Mongoose's `select: false` setting to prevent accidental leaks.
-*   **HTTP Header Security:** `Helmet.js` configuration automatically injects mitigation headers against XSS (`X-XSS-Protection`) and framing exploits (`X-Frame-Options`).
-*   **Brute-Force Mitigation:** Built-in network rate-limiting using an in-memory sliding window algorithm to throttle malicious endpoint spikes.
-
----
-
-## 🚀 Installation & Local Deployment
-
-### Technical Prerequisites
-*   Node.js ≥ 18.x
-*   MongoDB Atlas or local instance ≥ 7.x
-*   Python ≥ 3.11.x
-
-### Deployment Steps
-
-1. Clone the codebase and move to the root directory:
-   ```bash
-   git clone https://github.com.git
-   cd RentSure_AI
-   ```
-
-2. Boot the Express Core Gateway Backend:
-   ```bash
-   cd server
-   npm install
-   cp .env.example .env  # Configure your local credentials
-   npm run dev
-   ```
-
-3. Spin up the FastAPI Machine Learning Worker:
-   ```bash
-   cd ../ai-service
-   pip install -r requirements.txt
-   uvicorn main:app --reload --port 8000
-   ```
-
-4. Launch the React Client UI:
-   ```bash
-   cd ../client
-   npm install
-   npm run dev
-   ```
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| GET | `/api/v1/properties` | Get all properties |
+| GET | `/api/v1/properties/nearby` | Get nearby properties |
+| POST | `/api/v1/properties` | Create property listing |
 
 ---
 
-## 🧪 Terminal API Verification (cURL Proofs)
+## 📄 OCR Scanner APIs
 
-Verify backend connectivity and route validation independently using these curl commands:
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| POST | `/api/v1/contracts/scan` | Upload and scan contract |
 
-### Create New User Identity
+---
+
+# ⚙️ Installation & Setup
+
+## 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/your-username/rentsure-ai.git
+cd rentsure-ai
+```
+
+---
+
+## 2️⃣ Setup Backend
+
+```bash
+cd server
+npm install
+npm run dev
+```
+
+---
+
+## 3️⃣ Setup FastAPI OCR Service
+
+```bash
+cd ../ai-service
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
+
+---
+
+## 4️⃣ Setup Frontend
+
+```bash
+cd ../client
+npm install
+npm run dev
+```
+
+---
+
+# 🧪 Sample API Testing
+
+## Register User
+
 ```bash
 curl -X POST http://localhost:5000/api/v1/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test User","email":"developer@rentsuredemo.com","password":"securePassword123"}'
-```
-
-### Post Geospatial Entity Mapping
-```bash
-curl -X POST http://localhost:5000/api/v1/properties \
-  -H "Content-Type: application/json" \
-  -d '{"title":"Premium Student Studio","address":{"full":"Near MNIT Campus","lat":26.8628,"lng":75.8092},"price":{"monthly":5000},"amenities":["WiFi","CCTV"]}'
-```
-
-### Direct Asynchronous Document Parsing Interface
-```bash
-curl -X POST http://localhost:8000/scan \
-  -F "file=@sample_lease_contract.txt"
+-H "Content-Type: application/json" \
+-d '{"name":"Test User","email":"test@example.com","password":"password123"}'
 ```
 
 ---
 
-### 👨‍💻 Developed By
+## Upload Contract
+
+```bash
+curl -X POST http://localhost:8000/scan \
+-F "file=@sample_contract.pdf"
+```
+
+---
+
+# 📚 Learning Outcomes
+
+Through this project, I explored:
+
+- Full-stack MERN development
+- REST API architecture
+- JWT authentication flow
+- MongoDB geospatial indexing
+- FastAPI microservices
+- OCR/PDF text extraction
+- Node.js ↔ Python backend integration
+- API security middleware
+- File upload handling
+
+---
+
+# 🎯 Future Improvements
+
+- Cloud deployment
+- AI-powered contract summarization
+- Real-time chat system
+- Property recommendation engine
+- Advanced NLP risk analysis
+
+---
+
+# 👨‍💻 Developer
+
 **Aakash Kumar**  
-*Specialization: Full Stack Systems Engineering, Microservices Architecture, Intelligence Integration*  
-Malaviya National Institute of Technology (MNIT) Jaipur  
-*Department of Electronics & Communication Engineering*
+B.Tech — Electronics & Communication Engineering  
+Malaviya National Institute of Technology Jaipur
+
+---
+
+<div align="center">
+
+### ⭐ If you found this project useful, consider giving it a star.
+
+</div>
