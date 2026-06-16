@@ -2,43 +2,27 @@ const mongoose = require("mongoose");
 const config = require("./env");
 const logger = require("../utils/logger");
 
+// Connect to MongoDB
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(config.mongodbUri, {
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-    });
+    const conn = await mongoose.connect(config.mongodbUri);
 
-    logger.info(`✅ MongoDB Connected: ${conn.connection.host}`);
-
-    mongoose.connection.on("error", (err) => {
-      logger.error(`❌ MongoDB connection error: ${err}`);
-    });
-
-    mongoose.connection.on("disconnected", () => {
-      logger.warn("⚠️ MongoDB disconnected. Attempting to reconnect...");
-    });
-
-    mongoose.connection.on("reconnected", () => {
-      logger.info("✅ MongoDB reconnected successfully");
-    });
+    logger.info(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    logger.error(`❌ MongoDB connection failed: ${error.message}`);
+    logger.error(`MongoDB connection failed: ${error.message}`);
 
-    if (config.isDevelopment) {
-      console.error("Full error details:", error);
-    }
-
+    // Stop the application if database connection fails
     process.exit(1);
   }
 };
 
+// Close MongoDB connection
 const disconnectDB = async () => {
   try {
     await mongoose.disconnect();
-    logger.info("MongoDB disconnected gracefully");
+    logger.info("MongoDB disconnected");
   } catch (error) {
-    logger.error("Error disconnecting from MongoDB:", error);
+    logger.error(`Error disconnecting MongoDB: ${error.message}`);
   }
 };
 
