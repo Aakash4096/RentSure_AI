@@ -2,14 +2,14 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const config = require("../config/env");
 
-// Helper: Generate JWT token
+// Generate JWT token
 const generateToken = (userId, role) => {
   return jwt.sign({ userId, role }, config.jwtSecret, {
     expiresIn: config.jwtExpire,
   });
 };
 
-// POST /api/v1/auth/register
+// Register user
 const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -20,10 +20,8 @@ const register = async (req, res) => {
       return res.status(400).json({ message: "Email already registered" });
     }
 
-    // Create user (password gets hashed automatically by User model)
     const user = await User.create({ name, email, password });
 
-    // Generate token and respond
     const token = generateToken(user._id, user.role);
 
     res.status(201).json({
@@ -32,34 +30,32 @@ const register = async (req, res) => {
       user: user.toJSON(),
     });
   } catch (error) {
-    console.error("REGISTER ERROR:", error.message);
-    console.error("FULL ERROR:", error);
-    res
-      .status(500)
-      .json({ message: "Registration failed", error: error.message });
+    console.error("Register error:", error.message);
+
+    res.status(500).json({
+      message: "Registration failed",
+    });
   }
 };
 
-// POST /api/v1/auth/login
+// Login user
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find user and INCLUDE password field (it's hidden by default)
+    // Include password for verification
     const user = await User.findOne({ email }).select("+password");
 
-    // Check if user exists
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Check if password matches
     const isMatch = await user.comparePassword(password);
+
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Generate token
     const token = generateToken(user._id, user.role);
 
     res.json({
@@ -68,12 +64,15 @@ const login = async (req, res) => {
       user: user.toJSON(),
     });
   } catch (error) {
-    console.error("LOGIN ERROR:", error.message);
-    res.status(500).json({ message: "Login failed", error: error.message });
+    console.error("Login error:", error.message);
+
+    res.status(500).json({
+      message: "Login failed",
+    });
   }
 };
 
-// GET /api/v1/auth/me
+// Get current user
 const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
@@ -84,10 +83,11 @@ const getMe = async (req, res) => {
 
     res.json({ user: user.toJSON() });
   } catch (error) {
-    console.error("GET ME ERROR:", error.message);
-    res
-      .status(500)
-      .json({ message: "Failed to fetch profile", error: error.message });
+    console.error("GetMe error:", error.message);
+
+    res.status(500).json({
+      message: "Failed to fetch user",
+    });
   }
 };
 

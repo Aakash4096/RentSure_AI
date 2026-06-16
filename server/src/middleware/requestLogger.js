@@ -1,16 +1,18 @@
-// Create: server/src/middleware/requestLogger.js
 const requestLogger = (req, res, next) => {
-  // Your code here
   const method = req.method;
   const url = req.originalUrl;
   const startTime = Date.now();
+
+  // Runs when response is finished
   res.on("finish", () => {
+    const duration = Date.now() - startTime;
+
     console.log(
-      `${new Date().toISOString()} ${method} ${url} ${res.statusCode} ${Date.now() - startTime}ms`,
+      `${new Date().toISOString()} ${method} ${url} ${res.statusCode} ${duration}ms`,
     );
   });
 
-  // Hint: Use res.on('finish', () => { ... }) to calculate response time
   next();
 };
+
 module.exports = requestLogger;

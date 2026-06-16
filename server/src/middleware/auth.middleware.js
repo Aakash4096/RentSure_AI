@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/env");
 
-// Middleware to verify JWT token
+// Verify JWT token
 const protect = (req, res, next) => {
   let token;
 
-  // Check if token exists in Authorization header
+  // Get token from Authorization header
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
@@ -18,10 +18,9 @@ const protect = (req, res, next) => {
   }
 
   try {
-    // Verify token
     const decoded = jwt.verify(token, config.jwtSecret);
 
-    // Attach user info to request
+    // Attach user data to request
     req.user = decoded;
 
     next();
@@ -30,7 +29,7 @@ const protect = (req, res, next) => {
   }
 };
 
-// Factory function for role-based access
+// Role-based access control
 const authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
