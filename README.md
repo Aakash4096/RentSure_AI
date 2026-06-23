@@ -26,19 +26,19 @@ RentSure AI is a full-stack MERN application designed to help students discover 
 
 ---
 
-# 📸 Screenshots
+## 📸 Screenshots
 
-screenshots/
+### Dashboard
 
-- dashboard.png
-- add-property.png
-- search-results.png
-
-```md
 ![Dashboard](./screenshots/dashboard.png)
+
+### Property Search
+
 ![Search Results](./screenshots/search-results.png)
+
+### Add Property
+
 ![Add Property](./screenshots/add-property.png)
-```
 
 ---
 
