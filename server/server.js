@@ -29,8 +29,6 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 const requestLogger = require("./src/middleware/requestLogger");
 app.use(requestLogger);
-
-app.use("/api/v1/contracts", require("./src/routes/v1/contract.routes"));
 app.use("/api/v1/auth", require("./src/routes/v1/auth.routes"));
 app.use("/api/v1/properties", require("./src/routes/v1/property.routes"));
 
