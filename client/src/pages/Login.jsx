@@ -1,20 +1,28 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 
-const Login = () => {
+function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
-      await login(email, password);
-      window.location.href = "/";
+      const data = await login(email, password);
+
+      // Redirect based on role
+      if (data.user.role === "admin") {
+        navigate("/admin");
+      } else if (data.user.role === "landlord") {
+        navigate("/landlord");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }
@@ -22,71 +30,54 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      <div className="absolute top-20 left-20 w-64 h-64 bg-orange-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse" />
-      <div className="absolute bottom-20 right-20 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse" />
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 w-full max-w-md shadow-2xl"
-      >
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg shadow-orange-500/20">
-            🏠
-          </div>
-          <h1 className="text-3xl font-bold text-white">
-            RentSure<span className="text-orange-400">AI</span>
-          </h1>
-          <p className="text-white/40 mt-2">Smart student housing</p>
-        </div>
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 w-full max-w-md">
+        <h1 className="text-3xl font-bold text-white text-center mb-2">
+          Welcome Back
+        </h1>
+        <p className="text-white/40 text-center mb-8">
+          Sign in to your account
+        </p>
 
         {error && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl mb-6 text-sm"
-          >
+          <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl mb-4 text-sm">
             {error}
-          </motion.div>
+          </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:border-orange-500/50 focus:outline-none transition"
-            placeholder="Email address"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 outline-none"
+            placeholder="Email Address"
             required
           />
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:border-orange-500/50 focus:outline-none transition"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 outline-none"
             placeholder="Password"
             required
           />
           <button
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-medium hover:from-orange-600 hover:to-orange-700 transition shadow-lg shadow-orange-500/20"
+            className="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-medium hover:from-orange-600 hover:to-orange-700 transition"
           >
             Sign In
           </button>
         </form>
 
         <p className="text-center text-white/30 mt-6 text-sm">
-          New here?{" "}
-          <Link
-            to="/register"
-            className="text-orange-400 hover:text-orange-300 font-medium"
-          >
-            Create account
-          </Link>
+          Don't have an account?{" "}
+          <a href="/register" className="text-orange-400 hover:underline">
+            Register
+          </a>
         </p>
-      </motion.div>
+      </div>
     </div>
   );
-};
+}
 
 export default Login;

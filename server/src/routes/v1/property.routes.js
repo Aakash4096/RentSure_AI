@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { protect, authorize } = require("../../middleware/auth.middleware");
+
 const {
   getProperties,
   getNearbyProperties,
@@ -7,20 +9,21 @@ const {
   getProperty,
   updateSafetyScore,
   updateTrustScore,
+  getMyListings,
+  deleteProperty,
 } = require("../../controllers/property.controller");
 
-router.put("/:id/trust", updateTrustScore);
-
-// GET all properties
+// Public routes
 router.get("/", getProperties);
-
-// GET nearby properties (MUST be before /:id)
 router.get("/nearby", getNearbyProperties);
 
-// GET single property
+router.get("/my-listings", protect, getMyListings);
 router.get("/:id", getProperty);
 
-// POST create property
-router.post("/", createProperty);
+// Protected routes
+router.post("/", protect, createProperty);
+router.put("/:id/safety", protect, updateSafetyScore);
+router.put("/:id/trust", protect, updateTrustScore);
+router.delete("/:id", protect, authorize("admin", "landlord"), deleteProperty);
 
 module.exports = router;

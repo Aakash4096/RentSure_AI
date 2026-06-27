@@ -12,7 +12,7 @@ const generateToken = (userId, role) => {
 // Register user
 const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -20,7 +20,7 @@ const register = async (req, res) => {
       return res.status(400).json({ message: "Email already registered" });
     }
 
-    const user = await User.create({ name, email, password });
+    const user = await User.create({ name, email, password, role });
 
     const token = generateToken(user._id, user.role);
 

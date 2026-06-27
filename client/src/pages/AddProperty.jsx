@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 
-const AddProperty = () => {
+function AddProperty() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     title: "",
     full: "",
@@ -40,7 +41,7 @@ const AddProperty = () => {
           .map((a) => a.trim())
           .filter((a) => a),
       });
-      setMessage("✅ Property added successfully!");
+      setMessage("Property added successfully!");
       setForm({
         title: "",
         full: "",
@@ -58,17 +59,19 @@ const AddProperty = () => {
   };
 
   const inputClass =
-    "w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:border-green-500/50 focus:outline-none transition";
+    "w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 outline-none";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 w-full max-w-lg"
-      >
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 w-full max-w-lg">
+        {/* Back Button + Title */}
         <div className="flex items-center gap-3 mb-6">
-          <span className="text-2xl">🏠</span>
+          <button
+            onClick={() => navigate(-1)}
+            className="text-white/60 hover:text-white text-lg"
+          >
+            ←
+          </button>
           <h1 className="text-2xl font-bold text-white">Add New Property</h1>
         </div>
 
@@ -147,20 +150,20 @@ const AddProperty = () => {
           </div>
           <input
             className={inputClass}
-            placeholder="Amenities (WiFi, AC, CCTV - comma separated)"
+            placeholder="Amenities (WiFi, AC, CCTV)"
             value={form.amenities}
             onChange={(e) => setForm({ ...form, amenities: e.target.value })}
           />
           <button
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl font-medium hover:from-green-600 hover:to-green-700 transition shadow-lg shadow-green-500/20"
+            className="w-full py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl font-medium"
           >
-            ➕ Add Property
+            Add Property
           </button>
         </form>
-      </motion.div>
+      </div>
     </div>
   );
-};
+}
 
 export default AddProperty;

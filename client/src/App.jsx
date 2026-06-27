@@ -4,6 +4,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import AddProperty from "./pages/AddProperty";
+import LandlordDashboard from "./pages/LandlordDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
@@ -28,11 +30,30 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+
             <Route
               path="/add-property"
               element={
                 <ProtectedRoute>
                   <AddProperty />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/landlord"
+              element={
+                <ProtectedRoute>
+                  <LandlordDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
                 </ProtectedRoute>
               }
             />
