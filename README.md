@@ -1,4 +1,4 @@
-# 🏠 RentSure AI
+# 🏠 RentSure  – Student Housing Platform
 
 <div align="center">
 
